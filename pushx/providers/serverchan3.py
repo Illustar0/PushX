@@ -2,17 +2,18 @@ import json
 import httpx
 import logging
 from typing import Union
+from pydantic import Field, AliasChoices
 from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParams
 
 
 logger = logging.getLogger(__name__)
-
+logger.addHandler(logging.NullHandler())
 
 # Metadata
 class NotifyParams(BaseProviderParams):
-    title: str
+    title: str = Field(..., validation_alias=AliasChoices("title", "text"))
     """通知的标题"""
-    content: str = None
+    desp: str = Field(None, validation_alias=AliasChoices("desp", "content", "message"))
     """通知的内容，支持 Markdown"""
     tags: str = None
     """通知的 tags"""
@@ -56,9 +57,9 @@ class ServerChan3(BasePushProvider):
         )
         try:
             if json.loads(response.text)["code"] != 0:
-                logger.error(f"ServerChan3 Push error ,detail:{response.text}")
+                logger.error(f"ServerChan3 Push error, detail:{e}, response detail:")
                 return False
             else:
                 return True
         except Exception as e:
-            logger.error(f"ServerChan3 Push error ,detail:{e}")
+            logger.error(f"ServerChan3 Push error, detail:{e}, response detail:")
