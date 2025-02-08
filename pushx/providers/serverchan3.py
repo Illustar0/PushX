@@ -14,6 +14,7 @@ logger.addHandler(logging.NullHandler())
 class NotifyParams(BaseProviderParams):
     title: str = Field(..., validation_alias=AliasChoices("title", "text"))
     """通知的标题"""
+    # noinspection SpellCheckingInspection
     desp: str = Field(None, validation_alias=AliasChoices("desp", "content", "message"))
     """通知的内容，支持 Markdown"""
     tags: str = None
