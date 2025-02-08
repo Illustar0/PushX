@@ -13,6 +13,7 @@ logger.addHandler(logging.NullHandler())
 # Metadata
 # noinspection SpellCheckingInspection
 class NotifyParams(BaseProviderParams):
+    """Notify 所需参数"""
     title: str = Field(..., validation_alias=AliasChoices("title", "text"))
     """通知的标题"""
     desp: str = Field(None, validation_alias=AliasChoices("desp", "content", "message"))
@@ -35,6 +36,7 @@ class NotifyParams(BaseProviderParams):
 
 # noinspection SpellCheckingInspection
 class NotifierParams(BaseProviderParams):
+    """Notifier 所需参数"""
     sendkey: str
     """ServerChanTurbo 的 SendKey"""
 

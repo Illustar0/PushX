@@ -1,8 +1,8 @@
 name: Deploy docs to Pages
 
 on:
-  #push:
-    #branches: main
+  push:
+    branches: main
 
   workflow_dispatch:
 
@@ -24,12 +24,17 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Self Install
+        id: build
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry install
+
       - name: Build static files
         id: build
         run: |
-          pip install sphinx sphinx_book_theme myst_parser zzupy
+          pip install sphinx sphinx_book_theme myst_parser sphinx-design sphinx-markdown-builder autodoc_pydantic
           cd docs
-          sphinx-apidoc -o source ../zzupy
           make html
 
       - name: Upload static files as artifact
