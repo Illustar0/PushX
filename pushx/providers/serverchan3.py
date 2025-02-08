@@ -9,6 +9,7 @@ from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParam
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
+
 # Metadata
 class NotifyParams(BaseProviderParams):
     title: str = Field(..., validation_alias=AliasChoices("title", "text"))
