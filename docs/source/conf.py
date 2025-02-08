@@ -8,35 +8,36 @@
 import sys
 from pathlib import Path
 from pushx import __version__
-sys.path.insert(0, str(Path('../..', 'pushx').resolve()))
-project = 'PushX'
-copyright = '2025, Illustar0'
-author = 'Illustar0'
+
+sys.path.insert(0, str(Path("../..", "pushx").resolve()))
+project = "PushX"
+copyright = "2025, Illustar0"
+author = "Illustar0"
 release = __version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinx_markdown_builder',
-    'sphinxcontrib.autodoc_pydantic',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.coverage',
-    'myst_parser',
-    'sphinx_design',
-    'sphinx.ext.githubpages',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.mathjax'
+    "sphinx_markdown_builder",
+    "sphinxcontrib.autodoc_pydantic",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.coverage",
+    "myst_parser",
+    "sphinx_design",
+    "sphinx.ext.githubpages",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.mathjax",
 ]
 
-templates_path = ['_templates']
+templates_path = ["_templates"]
 exclude_patterns = []
 
-language = 'zh_CN'
+language = "zh_CN"
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_book_theme'
-html_static_path = ['_static']
+html_theme = "sphinx_book_theme"
+html_static_path = ["_static"]

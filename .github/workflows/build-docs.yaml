@@ -32,6 +32,7 @@ jobs:
       - name: Build static files
         id: build
         run: |
+          source $(poetry env info --path)/bin/activate
           pip install sphinx sphinx_book_theme myst_parser sphinx-design sphinx-markdown-builder autodoc_pydantic
           cd docs
           make html
