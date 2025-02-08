@@ -1,4 +1,4 @@
-import logging
+from pushx.main import Notifier
+import pushx.providers
 
-logger = logging.getLogger("PushX")
-logger.addHandler(logging.NullHandler())
+__all__ = ["Notifier", "providers"]

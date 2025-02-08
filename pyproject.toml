@@ -2,7 +2,7 @@
 name = "pushx"
 version = "0.1.0"
 description = "One-Stop Python Push Solution"
-license = { text = "MIT",file = "LICENSE" }
+license = { text = "MIT" }
 keywords = [ "push", "python" ,"allinone","AIO" ]
 authors = [
     {name = "Illustar0",email = "me@illustar0.com"}

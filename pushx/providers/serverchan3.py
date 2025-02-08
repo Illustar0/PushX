@@ -1,8 +1,11 @@
 import json
 import httpx
+import logging
 from typing import Union
-from pushx import logger
 from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParams
+
+
+logger = logging.getLogger(__name__)
 
 
 # Metadata
@@ -51,8 +54,11 @@ class ServerChan3(BasePushProvider):
             f"https://{self._notifier_params.uid}.push.ft07.com/send/{self._notifier_params.sendkey}.send",
             json=json.loads(notify_params.model_dump_json()),
         )
-        if json.loads(response.text)["code"] != 0:
-            logger.error(f"ServerChan3 Push error ,detail:{response.text}")
-            return False
-        else:
-            return True
+        try:
+            if json.loads(response.text)["code"] != 0:
+                logger.error(f"ServerChan3 Push error ,detail:{response.text}")
+                return False
+            else:
+                return True
+        except Exception as e:
+            logger.error(f"ServerChan3 Push error ,detail:{e}")
