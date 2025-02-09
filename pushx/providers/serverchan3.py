@@ -1,7 +1,7 @@
 import json
 import httpx
 import logging
-from typing import Union
+from typing import Union, Optional
 from pydantic import Field, AliasChoices
 from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParams
 
@@ -44,17 +44,21 @@ __provider_meta__ = ProviderMetadata(
 
 
 class ServerChan3(BasePushProvider):
-    def _set_notifier_params(self, **kwargs: Union[NotifyParams, dict]):
-        if isinstance(kwargs, dict):
+    def _set_notifier_params(self, params: Optional[NotifierParams] = None,**kwargs):
+        if params is None:
             self._notifier_params = NotifierParams(**kwargs)
+        elif kwargs:
+            raise ValueError("不能同时传入 NotifierParams 对象和关键字参数")
         else:
-            self._notifier_params = kwargs
+            self._notifier_params = params
 
-    def _notify(self, **kwargs: Union[NotifyParams, dict]) -> bool:
-        if isinstance(kwargs, dict):
+    def _notify(self, params: Optional[NotifyParams] = None,**kwargs) -> bool:
+        if params is None:
             notify_params = NotifyParams(**kwargs)
+        elif kwargs:
+            raise ValueError("不能同时传入 NotifyParams 对象和关键字参数")
         else:
-            notify_params = kwargs
+            notify_params = params
         response = httpx.post(
             f"https://{self._notifier_params.uid}.push.ft07.com/send/{self._notifier_params.sendkey}.send",
             json=json.loads(notify_params.model_dump_json()),
