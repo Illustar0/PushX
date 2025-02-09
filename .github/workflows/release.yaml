@@ -40,7 +40,10 @@ jobs:
       - name: Publish | Upload package to PyPI
         if: steps.release.outputs.released == 'true'
         run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry install
           poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+          poetry build
           poetry publish
           
 
