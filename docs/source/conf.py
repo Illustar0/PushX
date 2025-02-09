@@ -7,13 +7,11 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import sys
 from pathlib import Path
-from pushx import __version__
-
 sys.path.insert(0, str(Path("../..", "pushx").resolve()))
 project = "PushX"
 copyright = "2025, Illustar0"
 author = "Illustar0"
-release = __version__
+release = "0.1.2"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
