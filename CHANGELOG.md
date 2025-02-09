@@ -1,6 +1,25 @@
 # CHANGELOG
 
 
+## v0.3.0 (2025-02-09)
+
+### Chores
+
+- Bump version
+  ([`26ee8e5`](https://github.com/Illustar0/PushX/commit/26ee8e566df62ac5918c5ef6182199e90b5bd066))
+
+- Prepare for 1.0.0
+  ([`6ec3899`](https://github.com/Illustar0/PushX/commit/6ec3899223dc89b482f692eb6a2c9202a38524ea))
+
+- Wrong field name in pyproject.toml
+  ([`4da96b9`](https://github.com/Illustar0/PushX/commit/4da96b9c22dab5f9eb8420b3bf293dd53f9559ce))
+
+### Features
+
+- Standardized push return values
+  ([`110a932`](https://github.com/Illustar0/PushX/commit/110a93230cc24dda777285a5a0c25ac1c4bb7f44))
+
+
 ## v0.2.0 (2025-02-09)
 
 ### Chores
@@ -12,6 +31,9 @@
   ([`b3a99a3`](https://github.com/Illustar0/PushX/commit/b3a99a3cbc68fb15f6acb153352466558b46a50a))
 
 ### Continuous Integration
+
+- Fix permissions issue
+  ([`a09f02c`](https://github.com/Illustar0/PushX/commit/a09f02c609ba69e076e758e45014c7744213f77e))
 
 - Use curl to install poetry
   ([`ec72622`](https://github.com/Illustar0/PushX/commit/ec726226b6ca1bf347bf4824ed216babbb0b005e))
