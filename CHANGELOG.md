@@ -1,6 +1,32 @@
 # CHANGELOG
 
 
+## v0.2.0 (2025-02-09)
+
+### Chores
+
+- Bump version
+  ([`06f7a97`](https://github.com/Illustar0/PushX/commit/06f7a97edc1499c93604ce18636b784c19a3f21d))
+
+- Modify version_variable
+  ([`b3a99a3`](https://github.com/Illustar0/PushX/commit/b3a99a3cbc68fb15f6acb153352466558b46a50a))
+
+### Continuous Integration
+
+- Use curl to install poetry
+  ([`ec72622`](https://github.com/Illustar0/PushX/commit/ec726226b6ca1bf347bf4824ed216babbb0b005e))
+
+### Features
+
+- Add support for nfty
+  ([`5d1fd97`](https://github.com/Illustar0/PushX/commit/5d1fd9708c324eb5c507edb2bc689322d2482eec))
+
+### Refactoring
+
+- Format code
+  ([`c2e54aa`](https://github.com/Illustar0/PushX/commit/c2e54aac6b9cb0b67e58f3bcf721ec4f17f08443))
+
+
 ## v0.1.3 (2025-02-09)
 
 ### Bug Fixes
