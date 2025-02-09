@@ -38,13 +38,10 @@ jobs:
           git_committer_email: "actions@users.noreply.github.com"
 
       - name: Publish | Upload package to PyPI
+        if: steps.release.outputs.released == 'true'
         run: |
-          if [ -d "dist" ]; then
-            poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-            poetry publish
-          else
-            echo "No dist directory, skip Publish to PyPI"
-          fi
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+          poetry publish
           
 
       - name: Publish | Upload to GitHub Release Assets
