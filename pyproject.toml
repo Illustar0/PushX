@@ -1,6 +1,6 @@
 [project]
 name = "pushx"
-version = "0.1.2"
+version = "0.1.3"
 description = "One-Stop Python Push Solution"
 license = { text = "MIT" }
 keywords = [ "push", "python" ,"allinone","AIO" ]
