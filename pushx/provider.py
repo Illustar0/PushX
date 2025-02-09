@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import Any, Type, Union, Optional
 from pydantic import BaseModel
 
+
 class PushResult(BaseModel):
     success: bool
     """是否成功"""

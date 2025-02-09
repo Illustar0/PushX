@@ -13,8 +13,8 @@ class Notifier:
     """
 
     def __init__(self, provider: types.ModuleType | str, **kwargs):
-        if isinstance(provider,str):
-            provider=getattr(providers, provider)
+        if isinstance(provider, str):
+            provider = getattr(providers, provider)
         _meta = getattr(provider, "__provider_meta__")
         cls = getattr(provider, _meta.class_name)
         self.provider = cls()

@@ -5,7 +5,12 @@ from typing import Optional
 import httpx
 from pydantic import Field, AliasChoices
 
-from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParams, PushResult
+from pushx.provider import (
+    ProviderMetadata,
+    BasePushProvider,
+    BaseProviderParams,
+    PushResult,
+)
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
@@ -51,7 +56,9 @@ class ServerChan3(BasePushProvider):
         if params is None:
             self._notifier_params = NotifierParams(**kwargs)
         elif kwargs:
-            raise ValueError("You cannot pass NotifierParams objects and keyword arguments at the same time")
+            raise ValueError(
+                "You cannot pass NotifierParams objects and keyword arguments at the same time"
+            )
         else:
             self._notifier_params = params
 
@@ -59,7 +66,9 @@ class ServerChan3(BasePushProvider):
         if params is None:
             notify_params = NotifyParams(**kwargs)
         elif kwargs:
-            raise ValueError("You cannot pass in NotifyParams objects and keyword arguments at the same time")
+            raise ValueError(
+                "You cannot pass in NotifyParams objects and keyword arguments at the same time"
+            )
         else:
             notify_params = params
         response = httpx.post(
@@ -71,13 +80,19 @@ class ServerChan3(BasePushProvider):
                 return PushResult(success=True, code=200)
             else:
                 logger.error(f"ServerChan3 Push error, detail:{response.text}")
-                return PushResult(success=False, code=500,
-                                  msg="An unexpected situation occurred, please refer to the response in data",
-                                  data=response.text)
+                return PushResult(
+                    success=False,
+                    code=500,
+                    msg="An unexpected situation occurred, please refer to the response in data",
+                    data=response.text,
+                )
         except Exception as e:
             logger.error(
                 f"ServerChan3 Push error, detail:{e}, response detail: {response.text}"
             )
-            return PushResult(success=False, code=500,
-                              msg="An unexpected situation occurred, please refer to the response in data",
-                              data=response.text)
+            return PushResult(
+                success=False,
+                code=500,
+                msg="An unexpected situation occurred, please refer to the response in data",
+                data=response.text,
+            )
