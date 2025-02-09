@@ -1,6 +1,38 @@
 # CHANGELOG
 
 
+## v0.4.0 (2025-02-09)
+
+### Continuous Integration
+
+- Add ci for develop
+  ([`19b63f9`](https://github.com/Illustar0/PushX/commit/19b63f9e9142fa1a87e1a05af9a9021fad8055e8))
+
+- Remove publish.yaml
+  ([`2a15be3`](https://github.com/Illustar0/PushX/commit/2a15be34c437acd707193864deb7658287e684be))
+
+### Documentation
+
+- Add README.md
+  ([`a0e9658`](https://github.com/Illustar0/PushX/commit/a0e965874cc5ca8d10b26af8cd8503d517f40478))
+
+- Update docs
+  ([`842bfdd`](https://github.com/Illustar0/PushX/commit/842bfdd08e8fc6676361820c1478d188cd550d75))
+
+- Update docs
+  ([`a6876aa`](https://github.com/Illustar0/PushX/commit/a6876aae4cb624d3f4f173d42789a516c3c3120e))
+
+### Features
+
+- Allows the use of str to specify the provider
+  ([`dc97031`](https://github.com/Illustar0/PushX/commit/dc97031b7a65be29646b31be8ab84296aff6c716))
+
+### Refactoring
+
+- Format code
+  ([`90a8bb8`](https://github.com/Illustar0/PushX/commit/90a8bb854fbdebfdb7a89074fe2e11049e1423d4))
+
+
 ## v0.3.0 (2025-02-09)
 
 ### Chores
