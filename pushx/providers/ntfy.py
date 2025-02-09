@@ -6,7 +6,7 @@ from typing import List, Dict, Optional
 import httpx
 from pydantic import Field, AliasChoices, ConfigDict
 
-from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParams
+from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParams, PushResult
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
@@ -80,24 +80,17 @@ class Ntfy(BasePushProvider):
         if params is None:
             self._notifier_params = NotifierParams(**kwargs)
         elif kwargs:
-            raise ValueError("不能同时传入 NotifierParams 对象和关键字参数")
+            raise ValueError("You cannot pass NotifierParams objects and keyword arguments at the same time")
         else:
             self._notifier_params = params
 
-    def _notify(self, params: Optional[NotifyParams] = None, **kwargs) -> bool:
+    def _notify(self, params: Optional[NotifyParams] = None, **kwargs) -> PushResult:
         if params is None:
             notify_params = NotifyParams(**kwargs)
         elif kwargs:
-            raise ValueError("不能同时传入 NotifyParams 对象和关键字参数")
+            raise ValueError("You cannot pass in NotifyParams objects and keyword arguments at the same time")
         else:
             notify_params = params
-        print(
-            json.loads(
-                notify_params.model_copy(
-                    update={"topic": self._notifier_params.topic}
-                ).model_dump_json()
-            )
-        )
         response = httpx.post(
             f"{self._notifier_params.base_url}",
             json=json.loads(
@@ -106,15 +99,14 @@ class Ntfy(BasePushProvider):
                 ).model_dump_json()
             ),
         )
-        print(response.text)
         try:
-            if json.loads(response.text)["code"] != 0:
-                logger.error(f"Ntfy Push error, detail:{response.text}")
-                return False
+            if "id" and "time" and "expires" in json.loads(response.text):
+                return PushResult(success=True,code=200)
             else:
-                return True
+                logger.error(f"Ntfy Push error, detail:{response.text}")
+                return PushResult(success=False,code=500,msg="An unexpected situation occurred, please refer to the response in data",data=response.text)
         except Exception as e:
             logger.error(
                 f"Ntfy Push error, detail:{e}, response detail: {response.text}"
             )
-            return False
+            return PushResult(success=False,code=500,msg="An unexpected situation occurred, please refer to the response in data",data=response.text)

@@ -5,7 +5,7 @@ from typing import Optional
 import httpx
 from pydantic import Field, AliasChoices, field_serializer
 
-from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParams
+from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParams, PushResult
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
@@ -59,15 +59,15 @@ class ServerChanTurbo(BasePushProvider):
         if params is None:
             self._notifier_params = NotifierParams(**kwargs)
         elif kwargs:
-            raise ValueError("不能同时传入 NotifierParams 对象和关键字参数")
+            raise ValueError("You cannot pass NotifierParams objects and keyword arguments at the same time")
         else:
             self._notifier_params = params
 
-    def _notify(self, params: Optional[NotifyParams] = None, **kwargs) -> bool:
+    def _notify(self, params: Optional[NotifyParams] = None, **kwargs) -> PushResult:
         if params is None:
             notify_params = NotifyParams(**kwargs)
         elif kwargs:
-            raise ValueError("不能同时传入 NotifyParams 对象和关键字参数")
+            raise ValueError("You cannot pass in NotifyParams objects and keyword arguments at the same time")
         else:
             notify_params = params
         response = httpx.post(
@@ -75,11 +75,17 @@ class ServerChanTurbo(BasePushProvider):
             json=json.loads(notify_params.model_dump_json()),
         )
         try:
-            if json.loads(response.text)["code"] != 0:
-                logger.error(f"ServerChanTurbo Push error, detail:{response.text}")
-                return False
+            if json.loads(response.text)["code"] == 0:
+                return PushResult(success=True, code=200)
             else:
-                return True
+                logger.error(f"ServerChanTurbo Push error, detail:{response.text}")
+                return PushResult(success=False, code=500,
+                                  msg="An unexpected situation occurred, please refer to the response in data",
+                                  data=response.text)
         except Exception as e:
-            logger.error(f"ServerChanTurbo Push error, detail:{e}, response detail:")
-            return False
+            logger.error(
+                f"ServerChanTurbo Push error, detail:{e}, response detail: {response.text}"
+            )
+            return PushResult(success=False, code=500,
+                              msg="An unexpected situation occurred, please refer to the response in data",
+                              data=response.text)

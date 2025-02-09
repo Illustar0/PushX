@@ -1,6 +1,16 @@
 from dataclasses import dataclass, field
-from typing import Any, Type, Union
+from typing import Any, Type, Union, Optional
 from pydantic import BaseModel
+
+class PushResult(BaseModel):
+    success: bool
+    """是否成功"""
+    code: int
+    """状态码"""
+    msg: str = None
+    """具体信息"""
+    data: Optional[Any] = None
+    """可能的数据"""
 
 
 class BaseProviderParams(BaseModel):

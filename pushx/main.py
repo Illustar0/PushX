@@ -1,6 +1,6 @@
 import types
 
-from pushx.provider import BaseProviderParams
+from pushx.provider import BaseProviderParams, PushResult
 
 
 class Notifier:
@@ -17,13 +17,13 @@ class Notifier:
         self.provider = cls()
         self.provider._set_notifier_params(**kwargs)
 
-    def notify(self, params: BaseProviderParams = None, **kwargs) -> bool:
+    def notify(self, params: BaseProviderParams = None, **kwargs) -> PushResult:
         """
         notify 发送通知
 
         :param params: 通过 provider 的 `__provider_meta__.notify_params` 构建
         :param kwargs: 参数，根据 provider 的 `__provider_meta__.notify_params` 定义
-        :return: 是否成功
-        :rtype: bool
+        :return: PushResult
+        :rtype: PushResult
         """
         return self.provider._notify(params, **kwargs)
