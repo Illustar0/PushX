@@ -39,8 +39,13 @@ jobs:
 
       - name: Publish | Upload package to PyPI
         run: |
-          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-          poetry publish
+          if [ -d "dist" ]; then
+            poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+            poetry publish
+          else
+            echo "No dist directory, skip Publish to PyPI"
+          fi
+          
 
       - name: Publish | Upload to GitHub Release Assets
         uses: python-semantic-release/publish-action@v9.18.1
