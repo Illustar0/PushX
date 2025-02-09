@@ -1,10 +1,11 @@
 import json
-import httpx
 import logging
-from typing import Union, Optional
-from pydantic import Field, AliasChoices, field_serializer
-from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParams
+from typing import Optional
 
+import httpx
+from pydantic import Field, AliasChoices, field_serializer
+
+from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParams
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
@@ -14,6 +15,7 @@ logger.addHandler(logging.NullHandler())
 # noinspection SpellCheckingInspection
 class NotifyParams(BaseProviderParams):
     """Notify 所需参数"""
+
     title: str = Field(..., validation_alias=AliasChoices("title", "text"))
     """通知的标题"""
     desp: str = Field(None, validation_alias=AliasChoices("desp", "content", "message"))
@@ -37,6 +39,7 @@ class NotifyParams(BaseProviderParams):
 # noinspection SpellCheckingInspection
 class NotifierParams(BaseProviderParams):
     """Notifier 所需参数"""
+
     sendkey: str
     """ServerChanTurbo 的 SendKey"""
 
@@ -52,7 +55,7 @@ __provider_meta__ = ProviderMetadata(
 
 
 class ServerChanTurbo(BasePushProvider):
-    def _set_notifier_params(self, params: Optional[NotifierParams] = None,**kwargs):
+    def _set_notifier_params(self, params: Optional[NotifierParams] = None, **kwargs):
         if params is None:
             self._notifier_params = NotifierParams(**kwargs)
         elif kwargs:
@@ -60,7 +63,7 @@ class ServerChanTurbo(BasePushProvider):
         else:
             self._notifier_params = params
 
-    def _notify(self, params: Optional[NotifyParams] = None,**kwargs) -> bool:
+    def _notify(self, params: Optional[NotifyParams] = None, **kwargs) -> bool:
         if params is None:
             notify_params = NotifyParams(**kwargs)
         elif kwargs:

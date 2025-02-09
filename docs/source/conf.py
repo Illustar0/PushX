@@ -7,6 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import sys
 from pathlib import Path
+
 sys.path.insert(0, str(Path("../..", "pushx").resolve()))
 project = "PushX"
 copyright = "2025, Illustar0"

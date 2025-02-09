@@ -1,21 +1,23 @@
 import json
-import httpx
 import logging
-from typing import Union, Optional
-from pydantic import Field, AliasChoices
-from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParams
+from typing import Optional
 
+import httpx
+from pydantic import Field, AliasChoices
+
+from pushx.provider import ProviderMetadata, BasePushProvider, BaseProviderParams
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
 # Metadata
+# noinspection SpellCheckingInspection
 class NotifyParams(BaseProviderParams):
     """Notify 所需参数"""
+
     title: str = Field(..., validation_alias=AliasChoices("title", "text"))
     """通知的标题"""
-    # noinspection SpellCheckingInspection
     desp: str = Field(None, validation_alias=AliasChoices("desp", "content", "message"))
     """通知的内容，支持 Markdown"""
     tags: str = None
@@ -24,9 +26,10 @@ class NotifyParams(BaseProviderParams):
     """通知的略缩"""
 
 
+# noinspection SpellCheckingInspection
 class NotifierParams(BaseProviderParams):
     """Notifier 所需参数"""
-    # noinspection SpellCheckingInspection
+
     sendkey: str
     """ServerChan3 的 SendKey"""
     uid: int
@@ -44,7 +47,7 @@ __provider_meta__ = ProviderMetadata(
 
 
 class ServerChan3(BasePushProvider):
-    def _set_notifier_params(self, params: Optional[NotifierParams] = None,**kwargs):
+    def _set_notifier_params(self, params: Optional[NotifierParams] = None, **kwargs):
         if params is None:
             self._notifier_params = NotifierParams(**kwargs)
         elif kwargs:
@@ -52,7 +55,7 @@ class ServerChan3(BasePushProvider):
         else:
             self._notifier_params = params
 
-    def _notify(self, params: Optional[NotifyParams] = None,**kwargs) -> bool:
+    def _notify(self, params: Optional[NotifyParams] = None, **kwargs) -> bool:
         if params is None:
             notify_params = NotifyParams(**kwargs)
         elif kwargs:
