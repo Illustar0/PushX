@@ -24,18 +24,19 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Self Install
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          poetry install
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        run: uv python install
 
       - name: Build static files
         id: build
         run: |
-          source $(poetry env info --path)/bin/activate
-          pip install sphinx sphinx_book_theme myst_parser sphinx-design sphinx-markdown-builder autodoc_pydantic
+          uv sync
+          uv run pip install sphinx sphinx_book_theme myst_parser sphinx-design sphinx-markdown-builder autodoc_pydantic
           cd docs
-          make html
+          uv make html
 
       - name: Upload static files as artifact
         id: deployment
