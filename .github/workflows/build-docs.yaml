@@ -34,6 +34,7 @@ jobs:
         id: build
         run: |
           uv sync
+          uv run pip install .
           uv run pip install sphinx sphinx_book_theme myst_parser sphinx-design sphinx-markdown-builder autodoc_pydantic
           cd docs
           uv run make html
