@@ -29,4 +29,4 @@ version_variables = [
 version_toml = [
     "pyproject.toml:project.version"
 ]
-build_command = "uv build"
+build_command = "pip install uv&&uv build"
