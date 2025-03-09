@@ -3,6 +3,7 @@ import logging
 from typing import Optional
 
 import httpx
+from loguru import logger
 from pydantic import Field, AliasChoices, field_serializer
 
 from pushx.provider import (
@@ -11,9 +12,6 @@ from pushx.provider import (
     BaseProviderParams,
     PushResult,
 )
-
-logger = logging.getLogger(__name__)
-logger.addHandler(logging.NullHandler())
 
 
 # Metadata
@@ -60,10 +58,15 @@ __provider_meta__ = ProviderMetadata(
 
 
 class ServerChanTurbo(BasePushProvider):
+    _notifier_params: NotifierParams
+
     def _set_notifier_params(self, params: Optional[NotifierParams] = None, **kwargs):
         if params is None:
             self._notifier_params = NotifierParams(**kwargs)
         elif kwargs:
+            logger.error(
+                "You cannot pass NotifierParams objects and keyword arguments at the same time"
+            )
             raise ValueError(
                 "You cannot pass NotifierParams objects and keyword arguments at the same time"
             )
@@ -74,6 +77,9 @@ class ServerChanTurbo(BasePushProvider):
         if params is None:
             notify_params = NotifyParams(**kwargs)
         elif kwargs:
+            logger.error(
+                "You cannot pass in NotifyParams objects and keyword arguments at the same time"
+            )
             raise ValueError(
                 "You cannot pass in NotifyParams objects and keyword arguments at the same time"
             )
@@ -84,10 +90,10 @@ class ServerChanTurbo(BasePushProvider):
             json=json.loads(notify_params.model_dump_json()),
         )
         try:
-            if json.loads(response.text)["code"] == 0:
+            if response.json()["code"] == 0:
                 return PushResult(success=True, code=200)
             else:
-                logger.error(f"ServerChanTurbo Push error, detail:{response.text}")
+                logger.error(f"ServerChanTurbo Push error, detail: {response.text}")
                 return PushResult(
                     success=False,
                     code=500,

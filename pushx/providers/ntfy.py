@@ -1,9 +1,8 @@
 import json
-import logging
+import httpx
 from enum import Enum
 from typing import List, Dict, Optional
-
-import httpx
+from loguru import logger
 from pydantic import Field, AliasChoices, ConfigDict
 
 from pushx.provider import (
@@ -12,9 +11,6 @@ from pushx.provider import (
     BaseProviderParams,
     PushResult,
 )
-
-logger = logging.getLogger(__name__)
-logger.addHandler(logging.NullHandler())
 
 
 # Metadata
@@ -81,10 +77,15 @@ __provider_meta__ = ProviderMetadata(
 
 
 class Ntfy(BasePushProvider):
+    _notifier_params: NotifierParams
+
     def _set_notifier_params(self, params: Optional[NotifierParams] = None, **kwargs):
         if params is None:
             self._notifier_params = NotifierParams(**kwargs)
         elif kwargs:
+            logger.error(
+                "You cannot pass NotifierParams objects and keyword arguments at the same time"
+            )
             raise ValueError(
                 "You cannot pass NotifierParams objects and keyword arguments at the same time"
             )
@@ -95,6 +96,9 @@ class Ntfy(BasePushProvider):
         if params is None:
             notify_params = NotifyParams(**kwargs)
         elif kwargs:
+            logger.error(
+                "You cannot pass in NotifyParams objects and keyword arguments at the same time"
+            )
             raise ValueError(
                 "You cannot pass in NotifyParams objects and keyword arguments at the same time"
             )
@@ -109,10 +113,10 @@ class Ntfy(BasePushProvider):
             ),
         )
         try:
-            if "id" and "time" and "expires" in json.loads(response.text):
+            if "id" and "time" and "expires" in response.json():
                 return PushResult(success=True, code=200)
             else:
-                logger.error(f"Ntfy Push error, detail:{response.text}")
+                logger.error(f"Ntfy Push error, detail: {response.text}")
                 return PushResult(
                     success=False,
                     code=500,
