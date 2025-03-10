@@ -40,7 +40,22 @@ class BasePushProvider(ABC):
         pass
 
     @abstractmethod
-    def _set_notifier_params(self, params: Optional[NotifierParams] = None, **kwargs) -> None:
+    async def _notify_async(
+        self, params: Optional[BaseNotifyParams] = None, **kwargs
+    ) -> PushResult:
+        """
+        异步发送通知的方法
+
+        :param params: 通知参数对象
+        :param kwargs: 通知参数关键字参数
+        :return: 推送结果
+        """
+        pass
+
+    @abstractmethod
+    def _set_notifier_params(
+        self, params: Optional[BaseNotifierParams] = None, **kwargs
+    ) -> None:
         """
         设置通知器参数的抽象方法
 

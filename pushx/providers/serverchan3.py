@@ -101,3 +101,45 @@ class ServerChan3(BasePushProvider):
                 msg="An unexpected situation occurred, please refer to the response in data",
                 data=response.text,
             )
+
+    async def _notify_async(
+        self, params: Optional[NotifyParams] = None, **kwargs
+    ) -> PushResult:
+        if params is None:
+            notify_params = NotifyParams(**kwargs)
+        elif kwargs:
+            logger.error(
+                "You cannot pass in NotifyParams objects and keyword arguments at the same time"
+            )
+            raise ValueError(
+                "You cannot pass in NotifyParams objects and keyword arguments at the same time"
+            )
+        else:
+            notify_params = params
+
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"https://{self._notifier_params.uid}.push.ft07.com/send/{self._notifier_params.sendkey}.send",
+                json=json.loads(notify_params.model_dump_json()),
+            )
+            try:
+                if response.json()["code"] == 0:
+                    return PushResult(success=True, code=200)
+                else:
+                    logger.error(f"ServerChan3 Push error, detail: {response.text}")
+                    return PushResult(
+                        success=False,
+                        code=500,
+                        msg="An unexpected situation occurred, please refer to the response in data",
+                        data=response.text,
+                    )
+            except Exception as e:
+                logger.error(
+                    f"ServerChan3 Push error, detail:{e}, response detail: {response.text}"
+                )
+                return PushResult(
+                    success=False,
+                    code=500,
+                    msg="An unexpected situation occurred, please refer to the response in data",
+                    data=response.text,
+                )

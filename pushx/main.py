@@ -48,3 +48,36 @@ class Notifier:
         except Exception as e:
             logger.error(f"Error sending notification: {str(e)}")
             return PushResult(success=False, code=500, msg=f"Internal error: {str(e)}")
+
+    async def notify_async(
+        self, params: BaseNotifyParams = None, **kwargs
+    ) -> PushResult:
+        """
+        异步发送通知
+
+        :param params: 通过 provider 的 `__provider_meta__.notify_params` 构建
+        :param kwargs: 参数，根据 provider 的 `__provider_meta__.notify_params` 定义
+        :return: PushResult
+        :rtype: PushResult
+        """
+        try:
+            if hasattr(self.provider, "_notify_async"):
+                result = await self.provider._notify_async(params, **kwargs)
+            else:
+                # 如果提供者没有实现异步方法，则使用同步方法
+                import asyncio
+
+                result = await asyncio.to_thread(
+                    self.provider._notify, params, **kwargs
+                )
+
+            if result.success:
+                logger.debug(f"Async notification sent successfully: {result.code}")
+            else:
+                logger.warning(
+                    f"Async notification failed: {result.code}, {result.msg}"
+                )
+            return result
+        except Exception as e:
+            logger.error(f"Error sending async notification: {str(e)}")
+            return PushResult(success=False, code=500, msg=f"Internal error: {str(e)}")
