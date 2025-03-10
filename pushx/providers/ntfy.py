@@ -6,10 +6,11 @@ from loguru import logger
 from pydantic import Field, AliasChoices, ConfigDict
 
 from pushx.provider import (
+    BaseNotifierParams,
     ProviderMetadata,
     BasePushProvider,
-    BaseProviderParams,
     PushResult,
+    BaseNotifyParams,
 )
 
 
@@ -25,7 +26,7 @@ class Priority(Enum):
 
 
 # noinspection SpellCheckingInspection
-class NotifyParams(BaseProviderParams):
+class NotifyParams(BaseNotifyParams):
     """Notify 所需参数"""
 
     model_config = ConfigDict(use_enum_values=True)
@@ -57,7 +58,7 @@ class NotifyParams(BaseProviderParams):
 
 
 # noinspection SpellCheckingInspection
-class NotifierParams(BaseProviderParams):
+class NotifierParams(BaseNotifierParams):
     """Notifier 所需参数"""
 
     topic: str

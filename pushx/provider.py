@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
-from typing import Any, Type, Union, Optional, Dict
+from typing import Any, Type, Optional, Dict
 from pydantic import BaseModel
 from abc import ABC, abstractmethod
+
 
 class PushResult(BaseModel):
     success: bool
@@ -14,26 +15,24 @@ class PushResult(BaseModel):
     """可能的数据"""
 
 
-class BaseProviderParams(BaseModel):
+class BaseNotifyParams(BaseModel):
     pass
 
 
-class NotifyParams(BaseProviderParams):
-    pass
-
-
-class NotifierParams(BaseProviderParams):
+class BaseNotifierParams(BaseModel):
     pass
 
 
 class BasePushProvider(ABC):
-    _notifier_params: NotifierParams
+    _notifier_params: BaseNotifierParams
 
     @abstractmethod
-    def _notify(self, params: Optional[NotifyParams] = None, **kwargs) -> PushResult:
+    def _notify(
+        self, params: Optional[BaseNotifyParams] = None, **kwargs
+    ) -> PushResult:
         """
         发送通知的抽象方法
-        
+
         :param params: 通知参数对象
         :param kwargs: 通知参数关键字参数
         :return: 推送结果
@@ -44,7 +43,7 @@ class BasePushProvider(ABC):
     def _set_notifier_params(self, params: Optional[NotifierParams] = None, **kwargs) -> None:
         """
         设置通知器参数的抽象方法
-        
+
         :param params: 通知器参数对象
         :param kwargs: 通知器参数关键字参数
         """
@@ -61,9 +60,9 @@ class ProviderMetadata:
     """Provider 类名"""
     description: str
     """Provider 介绍"""
-    notifier_params: Type[BaseProviderParams]
+    notifier_params: Type[BaseNotifierParams]
     """Notifier 所需参数"""
-    notify_params: Type[BaseProviderParams]
+    notify_params: Type[BaseNotifyParams]
     """Notify 所需参数"""
     extra: Dict[Any, Any] = field(default_factory=dict)
     """额外信息，可自由定义"""

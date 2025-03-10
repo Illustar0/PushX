@@ -7,14 +7,15 @@ from pydantic import Field, AliasChoices
 from pushx.provider import (
     ProviderMetadata,
     BasePushProvider,
-    BaseProviderParams,
     PushResult,
+    BaseNotifyParams,
+    BaseNotifierParams,
 )
 
 
 # Metadata
 # noinspection SpellCheckingInspection
-class NotifyParams(BaseProviderParams):
+class NotifyParams(BaseNotifyParams):
     """Notify 所需参数"""
 
     title: str = Field(..., validation_alias=AliasChoices("title", "text"))
@@ -28,7 +29,7 @@ class NotifyParams(BaseProviderParams):
 
 
 # noinspection SpellCheckingInspection
-class NotifierParams(BaseProviderParams):
+class NotifierParams(BaseNotifierParams):
     """Notifier 所需参数"""
 
     sendkey: str

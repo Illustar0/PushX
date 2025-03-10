@@ -2,7 +2,7 @@ import types
 from loguru import logger
 
 from pushx import providers
-from pushx.provider import BaseProviderParams, PushResult
+from pushx.provider import PushResult, BaseNotifyParams
 
 
 class Notifier:
@@ -29,7 +29,7 @@ class Notifier:
             logger.error(f"Failed to initialize notifier: {str(e)}")
             raise
 
-    def notify(self, params: BaseProviderParams = None, **kwargs) -> PushResult:
+    def notify(self, params: BaseNotifyParams = None, **kwargs) -> PushResult:
         """
         notify 发送通知
 
